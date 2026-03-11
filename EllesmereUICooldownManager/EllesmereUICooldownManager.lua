@@ -6492,9 +6492,16 @@ local function TalentAwareReconcile()
                         local removed = barData.removedSpells or {}
                         local kept, keptSet = {}, {}
                         for _, sid in ipairs(barData.trackedSpells) do
-                            if sid and sid ~= 0 and pool[sid] and not removed[sid] then
-                                kept[#kept + 1] = sid
-                                keptSet[sid] = true
+                            if sid and sid ~= 0 and not removed[sid] then
+                                -- Keep spell if it's in the viewer pool OR still known
+                                -- to the game.  The viewer may not be fully populated
+                                -- after a talent swap; dropping spells that are merely
+                                -- absent from the viewer would permanently lose them
+                                -- since buff bars are not talent-aware (no dormant).
+                                if pool[sid] or knownSet[sid] then
+                                    kept[#kept + 1] = sid
+                                    keptSet[sid] = true
+                                end
                             end
                         end
                         -- Append new spells in stable viewer child order
