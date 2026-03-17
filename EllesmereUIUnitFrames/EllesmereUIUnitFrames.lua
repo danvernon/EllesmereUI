@@ -641,6 +641,7 @@ local function UnitToSettingsKey(unit)
     if unit:match("^boss%d$") then return "boss" end
     if unit == "targettarget" or unit == "focustarget" then return "totPet" end
     if unit == "pet" then return "pet" end
+    if unit:match("^party%d$") then return "party" end
     if db.profile[unit] then return unit end
     return nil
 end
@@ -893,6 +894,10 @@ local function GetSettingsForUnit(unit)
         for i = 1, 5 do
             unitSettingsMap["boss" .. i] = db.profile.boss
         end
+        for i = 1, 4 do
+            unitSettingsMap["party" .. i] = db.profile.party
+        end
+        unitSettingsMap["party"] = db.profile.party
     end
     return unitSettingsMap[unit] or db.profile.player
 end
