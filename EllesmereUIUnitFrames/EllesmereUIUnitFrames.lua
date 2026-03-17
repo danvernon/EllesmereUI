@@ -2,6 +2,7 @@ local addonName, ns = ...
 
 local oUF = ns.oUF or oUF
 local PP = EllesmereUI.PP
+ns.PP = PP
 if not oUF then
     error("EllesmereUIUnitFrames: oUF library not found! Please install oUF to Libraries\\oUF\\ folder.")
     return
@@ -3489,6 +3490,26 @@ local function StyleBossFrame(frame, unit)
     frame._applyTextPositions = ApplyTextPositions
 end
 
+-- Expose builders for party/raid frame files
+ns.CreateHealthBar = CreateHealthBar
+ns.CreateAbsorbBar = CreateAbsorbBar
+ns.CreatePowerBar = CreatePowerBar
+ns.CreatePortrait = CreatePortrait
+ns.CreateCastBar = CreateCastBar
+ns.CreateUnifiedBorder = CreateUnifiedBorder
+ns.ReparentBarsToClip = ReparentBarsToClip
+ns.UpdateBordersForScale = UpdateBordersForScale
+ns.ApplyFramePosition = ApplyFramePosition
+ns.SetFSFont = SetFSFont
+ns.ContentToTag = ContentToTag
+ns.EstimateUFTextWidth = EstimateUFTextWidth
+ns.GetSettingsForUnit = GetSettingsForUnit
+ns.GetCastbarColor = GetCastbarColor
+ns.ApplyHealthBarTexture = ApplyHealthBarTexture
+ns.ApplyDarkTheme = ApplyDarkTheme
+ns.ApplyHealthBarAlpha = ApplyHealthBarAlpha
+ns.db = nil
+ns.frames = frames
 
 local function RegisterStylesOnce()
     if _G.EllesmereUF_StylesRegistered then
@@ -5440,6 +5461,7 @@ function InitializeFrames()
         frame:HookScript("OnEnter", UnitFrame_OnEnter)
         frame:HookScript("OnLeave", UnitFrame_OnLeave)
     end
+    ns.SetupUnitMenu = SetupUnitMenu
 
     -- Always spawn all frames; hide disabled ones for zero performance impact
     oUF:SetActiveStyle("EllesmerePlayer")
@@ -6464,6 +6486,7 @@ local EllesmereUF = EllesmereUI.Lite.NewAddon("EllesmereUIUnitFrames")
 
 function EllesmereUF:OnInitialize()
     db = EllesmereUI.Lite.NewDB("EllesmereUIUnitFramesDB", defaults, true)
+    ns.db = db
 
     ResolveFontPath()
 
